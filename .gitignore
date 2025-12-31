@@ -2018,3 +2018,4 @@
 /env/Scripts/pythonw.exe
 /env/pyvenv.cfg
 /src/credentials.json
+/src/token.json
