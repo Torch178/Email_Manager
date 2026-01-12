@@ -18,7 +18,11 @@ def main():
         results = (
             service.users().messages().list(userId="me", labelIds=["INBOX"]).execute()
         )
+        results2 = (
+            service.users().labels().list(userId="me").execute()
+        )
         messages = results.get("messages", [])
+        labels = results2.get("labels", [])
 
         #parse sender
         for message in messages:
@@ -27,9 +31,15 @@ def main():
             )
             payload = msg["payload"]
             headers = payload["headers"]
+
             for data in headers:
-                if data["name"] == 'From':
-                    print(f"Sender Address: {data["value"]}")
+                if(data["name"] == 'Subject'):
+                    subject = data["value"].strip().lower()
+                    #if("receipt" in subject or "paid" in subject or "transaction details" in subject or "payment summary" ):
+
+
+
+
 
 
 
