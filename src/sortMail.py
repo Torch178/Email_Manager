@@ -23,7 +23,7 @@ def main():
         )
         messages = results.get("messages", [])
         labels = results2.get("labels", [])
-
+        print("Labels:", labels)
         #parse sender
         for message in messages:
             msg = (
