@@ -1,6 +1,7 @@
 from validation_functions import check_token
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from helper_functions import get_label_id
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
@@ -24,6 +25,7 @@ def main():
         messages = results.get("messages", [])
         labels = results2.get("labels", [])
         print("Labels:", labels)
+        id = get_label_id(creds, "somethin'")
         #parse sender
         for message in messages:
             msg = (
