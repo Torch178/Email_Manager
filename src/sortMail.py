@@ -1,7 +1,7 @@
 from validation_functions import check_token
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from helper_functions import get_label_id
+from helper_functions import get_label_id, display_main_menu
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
@@ -14,6 +14,8 @@ def main():
     creds = check_token()
 
     try:
+        #variable declaration
+        menu_selection = None
         # Call the Gmail API
         service = build("gmail", "v1", credentials=creds)
         results = (
@@ -24,38 +26,22 @@ def main():
         )
         messages = results.get("messages", [])
         labels = results2.get("labels", [])
-        print("Labels:", labels)
-        id = get_label_id(creds, "somethin'")
-        #parse sender
-        for message in messages:
-            msg = (
-                service.users().messages().get(userId="me", id=message["id"]).execute()
-            )
-            payload = msg["payload"]
-            headers = payload["headers"]
 
-            for data in headers:
-                if(data["name"] == 'Subject'):
-                    subject = data["value"].strip().lower()
-                    #if("receipt" in subject or "paid" in subject or "transaction details" in subject or "payment summary" ):
+        #Main menu
+        while(True):
+            display_main_menu()
+            selection = int(input("Select an option: "))
+            match selection:
+                case 1:
+                    print("Display messages")
+                    continue
+                case 0:
+                    print("Exiting program...")
+                    break
+                case _:
+                    print("Invalid selection.")
+                    continue
 
-
-
-
-
-
-
-        if not messages:
-            print("No messages found.")
-            return
-
-        # print("Messages:")
-        # for message in messages:
-        #     print(f'Message ID: {message["id"]}')
-        #     msg = (
-        #         service.users().messages().get(userId="me", id=message["id"]).execute()
-        #     )
-        #     print(f'  Subject: {msg["snippet"]}')
 
     except HttpError as error:
         # TODO(developer) - Handle errors from gmail API.

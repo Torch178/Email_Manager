@@ -61,3 +61,10 @@ def create_label (service, name, color= color_keys["white"], type = 'user', labe
     label = service.users().labels().create(userId="me", body=label_body).execute()
     print(f"Created label: {label['name']}\nLabel Data: {label}")
     return label["id"]
+
+def display_main_menu():
+    print("\nMain Menu Options: ")
+    print("1 - Display messages")
+    print("2 - Display labels")
+    print("3 - Create label")
+    print("0 - Exit Program")

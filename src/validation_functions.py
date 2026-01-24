@@ -8,6 +8,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
 
 def check_token():
+    print("Checking Credentials...")
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
@@ -16,6 +17,7 @@ def check_token():
         creds = Credentials.from_authorized_user_file("token.json", SCOPES)
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
+        print("No valid credentials found. User must log in to Google API for token refresh.")
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
@@ -24,5 +26,6 @@ def check_token():
         # Save the credentials for the next run
         with open("token.json", "w") as token:
             token.write(creds.to_json())
-
+            print("Credentials refreshed sucessfully. Token saved to json.")
+    print("Credential verification successful!")
     return creds
