@@ -1,10 +1,13 @@
 from validation_functions import check_token
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from helper_functions import get_label_id, display_main_menu
+from display_functions import *
+from helper_functions import get_label_id
+from constants import color_keys
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
+
 
 
 def main():
@@ -21,19 +24,25 @@ def main():
         results = (
             service.users().messages().list(userId="me", labelIds=["INBOX"]).execute()
         )
-        results2 = (
-            service.users().labels().list(userId="me").execute()
-        )
         messages = results.get("messages", [])
-        labels = results2.get("labels", [])
-
+        header_params = ["Subject", "From", "To", "Message-ID", "Date"]
         #Main menu
         while(True):
             display_main_menu()
             selection = int(input("Select an option: "))
             match selection:
                 case 1:
-                    print("Display messages")
+                    print("Displaying messages...")
+                    for message in messages:
+                        msg_mata_data = service.users().messages().get(userId='me', id=message['id'], format='metadata', metadataHeaders=header_params).execute()
+                        print(msg_mata_data)
+                        display_message(msg_mata_data, service)
+                    continue
+                case 2:
+                    print("Displaying Labels...")
+                    continue
+                case 3:
+                    print("Creating Label...")
                     continue
                 case 0:
                     print("Exiting program...")
@@ -50,3 +59,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
